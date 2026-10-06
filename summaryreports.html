@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Summary Reports - Teacher Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="teacherdashboard.css">
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+  
+  <!-- Export Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+
+<body>
+  <header class="college-header">
+    <div class="header-row">
+      <div class="header-logo"><img src="image1.png" id="jspmLogo" alt="JSPM Logo"></div>
+      <div class="header-center">
+        <h1>JSPM's Rajarshi Shahu College of Engineering</h1>
+        <p>
+          Empowered Autonomous Institute • Affiliated to SPPU • Approved by AICTE<br />
+          NBA (UG) • NAAC “A” Grade • NIRF 151–200
+        </p>
+      </div>
+      <div class="header-logo"><img src="image2.png" id="rscoeLogo" alt="RSCOE Logo"></div>
+    </div>
+  </header>
+
+  <div class="dashboard-wrapper">
+    <nav class="sidebar" id="sidebar">
+      <ul class="sidebar-nav">
+        <li><button class="sidebar-btn" onclick="location.href='teacherdashboard.html'">🏠 Dashboard</button></li>
+        <li><button class="sidebar-btn" onclick="location.href='addstudent.html'">➕ Add Student</button></li>
+        <li><button class="sidebar-btn" onclick="location.href='managesubjects.html'">📚 Manage Subjects</button></li>
+        <li><button class="sidebar-btn" onclick="location.href='viewstudent.html'">👥 View Students</button></li>
+        <li><button class="sidebar-btn" onclick="location.href='viewfeedback.html'">💬 View Feedback</button></li>
+        <li><button class="sidebar-btn active" onclick="location.href='summaryreports.html'">📊 Summary Report</button></li>
+      </ul>
+      <button class="nav-action-btn logout-variant logout-btn" style="margin-top: auto; margin-bottom: 1rem;"
+        onclick="handleLogout()">
+        <span>Logout</span>
+      </button>
+    </nav>
+    <main class="main-content">
+      <div class="container">
+        <div class="dashboard">
+          <h1>Saved Summary Reports</h1>
+          
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Saved On</th>
+                  <th>Report Type</th>
+                  <th>Year</th>
+                  <th>Division</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="reportsTableBody">
+                <tr>
+                  <td colspan="5" style="text-align: center; padding: 2rem;">Loading reports...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="branding.js"></script>
+  <script src="summaryreports.js"></script>
+  <script>
+    function handleLogout() {
+      if (confirm('Are you sure you want to logout?')) {
+        auth.signOut().then(() => {
+          window.location.href = 'index.html';
+        });
+      }
+    }
+  </script>
+</body>
+
+</html>

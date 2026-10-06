@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Teacher Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="teacherdashboard.css">
+
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase.js"></script>
+  <!-- Export Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+
+<body>
+  <header class="college-header">
+    <div class="header-row">
+      <div class="header-logo"><img src="image1.png" id="jspmLogo" alt="JSPM Logo"></div>
+      <div class="header-center">
+        <h1>JSPM's Rajarshi Shahu College of Engineering</h1>
+        <p>
+          Empowered Autonomous Institute • Affiliated to SPPU • Approved by AICTE<br />
+          NBA (UG) • NAAC “A” Grade • NIRF 151–200
+        </p>
+      </div>
+      <div class="header-logo"><img src="image2.png" id="rscoeLogo" alt="RSCOE Logo"></div>
+    </div>
+  </header>
+
+  <div class="dashboard-wrapper">
+    <nav class="sidebar" id="sidebar">
+      <button class="nav-action-btn logout-variant logout-btn" style="margin-top: auto; margin-bottom: 1rem;"
+        onclick="handleLogout()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+        <span>Logout</span>
+      </button>
+      <ul class="sidebar-nav">
+        <li><button class="sidebar-btn" onclick="location.href='addstudent.html'">➕ Add Student</button></li>
+        <li><button class="sidebar-btn" onclick="location.href='managesubjects.html'">📚 Manage Subjects</button></li>
+        <li><button class="sidebar-btn" onclick="location.href='viewstudent.html'">👥 View Students</button></li>
+        <li><button class="sidebar-btn" onclick="location.href='viewselfstudents.html'">👤 View Self Registered
+            Students</button></li>
+        <li><button class="sidebar-btn" onclick="location.href='viewfeedback.html'">💬 View Feedback</button></li>
+        <li><button class="sidebar-btn" onclick="location.href='viewselffeedback.html'">💬 View Self Registered
+            Feedback</button></li>
+        <li><button class="sidebar-btn" onclick="location.href='summaryreports.html'">📊 Summary Report</button></li>
+      </ul>
+      <button class="mobile-toggle" onclick="toggleSidebar()">☰</button>
+    </nav>
+    <main class="main-content">
+      <div class="container">
+        <div class="dashboard">
+          <!-- Structure Buttons -->
+          <div class="structure-buttons">
+            <button class="structure-btn" onclick="openStructure1()">Structure 1</button>
+            <button class="structure-btn" onclick="openStructure2()">Structure 2</button>
+            <button class="structure-btn" onclick="openStructure3()">Structure 3</button>
+          </div>
+
+          <!-- Structure 1 Modal -->
+          <div id="structure1Modal" class="modal" style="display: none;">
+            <div class="modal-content">
+              <span class="close" onclick="closeStructure1()">&times;</span>
+              <h2>Structure 1 - Subject Summary Report</h2>
+              <div class="filter-section">
+                <label for="structure1Year">Year:</label>
+                <select id="structure1Year" onchange="loadStructure1Data()">
+                  <option value="">Select Year</option>
+                  <option value="FY">FY</option>
+                  <option value="SY">SY</option>
+                  <option value="TY">TY</option>
+                  <option value="BE">BE</option>
+                </select>
+                <label for="structure1Division">Division:</label>
+                <select id="structure1Division" onchange="loadStructure1Data()">
+                  <option value="">All Divisions</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                </select>
+              </div>
+              <div id="structure1TableContainer" style="display: none;">
+                <div class="export-buttons">
+                  <button class="export-btn" onclick="exportStructure1ToExcel()">Export to Excel</button>
+                  <button class="export-btn" onclick="exportStructure1ToPDF()">Export to PDF</button>
+                  <button id="saveStructure1Btn" class="export-btn" onclick="saveStructure1()" disabled>Save
+                    Report</button>
+                </div>
+                <div class="table-wrapper">
+                  <table id="structure1Table" class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Sr No</th>
+                        <th>Class</th>
+                        <th>Subject Name</th>
+                        <th>Faculty Name</th>
+                        <th>Units Covered</th>
+                        <th>Practicals Covered</th>
+                        <th>Attendance Marked on ERP</th>
+                        <th>TA 1 / TA 2 Completed</th>
+                        <th>Notes Uploaded</th>
+                        <th>Sign</th>
+                      </tr>
+                    </thead>
+                    <tbody id="structure1TableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Structure 2 Modal -->
+          <div id="structure2Modal" class="modal" style="display: none;">
+            <div class="modal-content">
+              <span class="close" onclick="closeStructure2()">&times;</span>
+              <h2>Structure 2 - Class Syllabus Coverage Report</h2>
+              <div class="filter-section">
+                <label for="structure2Year">Year:</label>
+                <select id="structure2Year" onchange="loadStructure2Data()">
+                  <option value="">Select Year</option>
+                  <option value="FY">FY</option>
+                  <option value="SY">SY</option>
+                  <option value="TY">TY</option>
+                  <option value="BE">BE</option>
+                </select>
+                <label for="structure2Division">Division:</label>
+                <select id="structure2Division" onchange="loadStructure2Data()">
+                  <option value="">All Divisions</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                </select>
+              </div>
+              <div id="structure2TableContainer" style="display: none;">
+                <div class="export-buttons">
+                  <button class="export-btn" onclick="exportStructure2ToExcel()">Export to Excel</button>
+                  <button class="export-btn" onclick="exportStructure2ToPDF()">Export to PDF</button>
+                  <button id="saveStructure2Btn" class="export-btn" onclick="saveStructure2()" disabled>Save
+                    Report</button>
+                </div>
+                <div class="table-wrapper">
+                  <table id="structure2Table" class="data-table">
+                    <thead>
+                      <tr>
+                        <th>Sr No</th>
+                        <th>Class</th>
+                        <th>Subject Name</th>
+                        <th>Faculty Name</th>
+                        <th>No of Lectures Planned</th>
+                        <th>No of Lectures Conducted</th>
+                        <th>No of Practicals Planned</th>
+                        <th>No of Practicals Conducted</th>
+                        <th>Practicals Completed</th>
+                        <th>Unit Completed</th>
+                        <th>Sign</th>
+                      </tr>
+                    </thead>
+                    <tbody id="structure2TableBody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Structure 3 Modal (Self-Registered Student Feedback Dashboard) -->
+          <div id="structure3Modal" class="modal" style="display: none;">
+            <div class="modal-content">
+              <span class="close" onclick="closeStructure3()">&times;</span>
+              <h2>Structure 3 - Self-Registered Student Feedback Dashboard</h2>
+
+              <!-- Filter Section -->
+              <div class="filter-section">
+                <div>
+                  <label for="structure3Cycle">Feedback Cycle:</label>
+                  <select id="structure3Cycle" onchange="loadStructure3Data()">
+                    <option value="active">Active Cycle</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="structure3Year">Class / Year:</label>
+                  <select id="structure3Year" onchange="loadStructure3Data()">
+                    <option value="">Select Class</option>
+                    <option value="FY">FY</option>
+                    <option value="SY">SY</option>
+                    <option value="TY">TY</option>
+                    <option value="BE">BE</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="structure3Division">Division:</label>
+                  <select id="structure3Division" onchange="loadStructure3Data()">
+                    <option value="">All Divisions</option>
+                    <option value="A">Division A</option>
+                    <option value="B">Division B</option>
+                    <option value="C">Division C</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="structure3Batch">Batch:</label>
+                  <select id="structure3Batch" onchange="loadStructure3Data()">
+                    <option value="">All Batches</option>
+                    <option value="A1">A1</option>
+                    <option value="A2">A2</option>
+                    <option value="A3">A3</option>
+                    <option value="B1">B1</option>
+                    <option value="B2">B2</option>
+                    <option value="B3">B3</option>
+                    <option value="C1">C1</option>
+                    <option value="C2">C2</option>
+                    <option value="C3">C3</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Main Dashboard Content Container -->
+              <div id="structure3TableContainer" style="display: none; padding: 1.5rem 2.5rem;">
+                <!-- Export and Save Actions -->
+                <div class="export-buttons"
+                  style="padding: 0 0 1.5rem 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center;">
+                  <button type="button" class="export-btn" onclick="startNewSelfFeedbackCycle()"
+                    style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; font-weight: 700;">🚀
+                    Start New Cycle</button>
+                  <button type="button" class="export-btn" onclick="deleteSelfFeedbackCycle()"
+                    style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; font-weight: 700;">🗑️
+                    Delete Selected Cycle</button>
+                  <button class="export-btn" onclick="exportStructure3ToExcel()">Save as Excel</button>
+                  <button class="export-btn" onclick="exportStructure3ToPDF()">Save as PDF</button>
+                  <button id="saveStructure3Btn" class="export-btn" onclick="saveStructure3()" disabled>Save
+                    Report</button>
+                </div>
+
+                <!-- Class Overall Summary Card -->
+                <div id="structure3SummaryCard" class="summary-overall-card"
+                  style="background: linear-gradient(135deg, #0a1f44 0%, #7c3aed 100%); color: white; border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; box-shadow: 0 10px 25px rgba(10,31,68,0.2);">
+                  <div
+                    style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                    <div>
+                      <span
+                        style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.85;">Selected
+                        Group Summary</span>
+                      <h3 id="summaryGroupTitle" style="font-size: 1.5rem; font-weight: 800; margin-top: 0.25rem;">TY -
+                        Division B - Batch B1</h3>
+                    </div>
+                    <div
+                      style="background: rgba(255,255,255,0.15); padding: 0.75rem 1.25rem; border-radius: 0.75rem; text-align: center; backdrop-filter: blur(5px);">
+                      <div style="font-size: 0.75rem; text-transform: uppercase; opacity: 0.9;">Class Overall Feedback
+                      </div>
+                      <div id="summaryOverallScore" style="font-size: 2rem; font-weight: 800; color: #f59e0b;">89%</div>
+                    </div>
+                  </div>
+
+                  <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 1rem; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 1px solid rgba(255,255,255,0.2);">
+                    <div>
+                      <div style="font-size: 0.75rem; opacity: 0.8;">Total Subjects</div>
+                      <div id="statTotalSubjects" style="font-size: 1.25rem; font-weight: 700;">6</div>
+                    </div>
+                    <div>
+                      <div style="font-size: 0.75rem; opacity: 0.8;">Theory Subjects</div>
+                      <div id="statTheorySubjects" style="font-size: 1.25rem; font-weight: 700;">4</div>
+                    </div>
+                    <div>
+                      <div style="font-size: 0.75rem; opacity: 0.8;">Practical Subjects</div>
+                      <div id="statPracticalSubjects" style="font-size: 1.25rem; font-weight: 700;">2</div>
+                    </div>
+                    <div>
+                      <div style="font-size: 0.75rem; opacity: 0.8;">Total Submissions</div>
+                      <div id="statTotalSubmissions" style="font-size: 1.25rem; font-weight: 700;">112</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Theory Subjects Section -->
+                <div class="structure3-section-block" style="margin-bottom: 2rem;">
+                  <div
+                    style="background: linear-gradient(135deg, #0a1f44 0%, #2563eb 100%); color: white; padding: 0.85rem 1.25rem; border-radius: 0.75rem; font-weight: 700; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <span>THEORY SUBJECTS</span>
+                    <span id="theorySectionCount"
+                      style="font-size: 0.85rem; background: rgba(255,255,255,0.2); padding: 0.2rem 0.65rem; border-radius: 20px;">0
+                      Subjects</span>
+                  </div>
+
+                  <div class="table-wrapper">
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th>Sr No</th>
+                          <th>Subject Name</th>
+                          <th>Faculty Name</th>
+                          <th>Students Submitted</th>
+                          <th>Q1 %</th>
+                          <th>Q2 %</th>
+                          <th>Q3 %</th>
+                          <th>Q4 %</th>
+                          <th>Q5 %</th>
+                          <th>Overall %</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="structure3TheoryTableBody"></tbody>
+                    </table>
+                  </div>
+                  <div id="noTheoryMsg"
+                    style="display: none; padding: 1.5rem; text-align: center; color: #64748b; font-style: italic;">No
+                    theory subject feedback found for selected filter.</div>
+                </div>
+
+                <!-- Practical Subjects Section -->
+                <div class="structure3-section-block">
+                  <div
+                    style="background: linear-gradient(135deg, #0284c7 0%, #0d9488 100%); color: white; padding: 0.85rem 1.25rem; border-radius: 0.75rem; font-weight: 700; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <span>PRACTICAL / LAB SUBJECTS</span>
+                    <span id="practicalSectionCount"
+                      style="font-size: 0.85rem; background: rgba(255,255,255,0.2); padding: 0.2rem 0.65rem; border-radius: 20px;">0
+                      Subjects</span>
+                  </div>
+
+                  <div class="table-wrapper">
+                    <table class="data-table">
+                      <thead>
+                        <tr>
+                          <th>Sr No</th>
+                          <th>Practical / Lab Subject</th>
+                          <th>Faculty Name</th>
+                          <th>Students Submitted</th>
+                          <th>Q1 %</th>
+                          <th>Q2 %</th>
+                          <th>Q3 %</th>
+                          <th>Q4 %</th>
+                          <th>Q5 %</th>
+                          <th>Overall %</th>
+                          <th>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody id="structure3PracticalTableBody"></tbody>
+                    </table>
+                  </div>
+                  <div id="noPracticalMsg"
+                    style="display: none; padding: 1.5rem; text-align: center; color: #64748b; font-style: italic;">No
+                    practical subject feedback found for selected filter.</div>
+                </div>
+              </div>
+
+              <div id="structure3NoData" class="no-data-msg"
+                style="text-align: center; padding: 3rem 2rem; color: #64748b;">
+                Please select a Class / Year above to view Self-Registered Student Feedback reports.
+              </div>
+            </div>
+          </div>
+
+          <!-- Structure 3 View Details Sub-Modal -->
+          <div id="structure3DetailsModal" class="modal" style="display: none;">
+            <div class="modal-content" style="max-width: 600px; padding: 0; overflow: hidden; border-radius: 1.25rem;">
+              <div
+                style="background: linear-gradient(135deg, #0a1f44 0%, #7c3aed 100%); color: white; padding: 1.5rem 2rem; position: relative;">
+                <span class="close" onclick="closeStructure3DetailsModal()"
+                  style="top: 1rem; right: 1.5rem;">&times;</span>
+                <h3 id="detailsSubjectName" style="font-size: 1.4rem; font-weight: 800; margin-bottom: 0.35rem;">Subject
+                  Name</h3>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                  <span id="detailsSubjectType"
+                    style="background: rgba(255,255,255,0.25); padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Theory</span>
+                  <span id="detailsFacultyName"
+                    style="background: rgba(255,255,255,0.15); padding: 0.2rem 0.65rem; border-radius: 20px; font-size: 0.8rem;">Faculty:
+                    Prof. ABC</span>
+                </div>
+              </div>
+
+              <div style="padding: 1.5rem 2rem;">
+                <div
+                  style="display: flex; justify-content: space-between; background: #f8fafc; padding: 0.85rem 1.25rem; border-radius: 0.75rem; border: 1px solid #e2e8f0; margin-bottom: 1.25rem;">
+                  <div>
+                    <span style="font-size: 0.75rem; color: #64748b; display: block; font-weight: 600;">CLASS &
+                      DIVISION</span>
+                    <strong id="detailsClassGroup" style="color: #0a1f44;">TY - Div B - Batch B1</strong>
+                  </div>
+                  <div style="text-align: right;">
+                    <span style="font-size: 0.75rem; color: #64748b; display: block; font-weight: 600;">STUDENTS
+                      SUBMITTED</span>
+                    <strong id="detailsStudentCount" style="color: #7c3aed;">18</strong>
+                  </div>
+                </div>
+
+                <h4 style="font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 0.85rem;">Individual
+                  Question Percentages</h4>
+
+                <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.5rem;">
+                  <div
+                    style="display: flex; justify-content: space-between; background: #f1f5f9; padding: 0.65rem 1rem; border-radius: 0.5rem; font-size: 0.9rem;">
+                    <span>Q1. Clarity of Explanation</span>
+                    <strong id="detailsQ1" style="color: #2563eb;">92%</strong>
+                  </div>
+                  <div
+                    style="display: flex; justify-content: space-between; background: #f1f5f9; padding: 0.65rem 1rem; border-radius: 0.5rem; font-size: 0.9rem;">
+                    <span>Q2. Communication Effectiveness</span>
+                    <strong id="detailsQ2" style="color: #2563eb;">89%</strong>
+                  </div>
+                  <div
+                    style="display: flex; justify-content: space-between; background: #f1f5f9; padding: 0.65rem 1rem; border-radius: 0.5rem; font-size: 0.9rem;">
+                    <span>Q3. Doubt Solving & Accessibility</span>
+                    <strong id="detailsQ3" style="color: #2563eb;">91%</strong>
+                  </div>
+                  <div
+                    style="display: flex; justify-content: space-between; background: #f1f5f9; padding: 0.65rem 1rem; border-radius: 0.5rem; font-size: 0.9rem;">
+                    <span>Q4. Teaching / Practical Execution</span>
+                    <strong id="detailsQ4" style="color: #2563eb;">88%</strong>
+                  </div>
+                  <div
+                    style="display: flex; justify-content: space-between; background: #f1f5f9; padding: 0.65rem 1rem; border-radius: 0.5rem; font-size: 0.9rem;">
+                    <span>Q5. Usefulness of Learning Session</span>
+                    <strong id="detailsQ5" style="color: #2563eb;">94%</strong>
+                  </div>
+                </div>
+
+                <div
+                  style="display: flex; justify-content: space-between; align-items: center; background: #f0fdf4; border: 1.5px solid #bbf7d0; padding: 1rem 1.25rem; border-radius: 0.75rem;">
+                  <span style="font-size: 1rem; font-weight: 700; color: #166534;">Overall Feedback Percentage</span>
+                  <span id="detailsOverall" style="font-size: 1.5rem; font-weight: 800; color: #15803d;">91%</span>
+                </div>
+              </div>
+
+              <div style="padding: 1rem 2rem; background: #f8fafc; border-top: 1px solid #e2e8f0; text-align: right;">
+                <button type="button" onclick="closeStructure3DetailsModal()"
+                  style="padding: 0.6rem 1.25rem; background: #0a1f44; color: white; border: none; border-radius: 0.5rem; font-weight: 600; cursor: pointer;">Close
+                  Details</button>
+              </div>
+            </div>
+          </div>
+
+        </div> <!-- /.dashboard -->
+
+        <div id="studentsCard" class="students-card">
+          <h2>Student Details</h2>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Year</th>
+                  <th>Division</th>
+                  <th>Batch</th>
+                  <th>PRN</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="studentsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div> <!-- /.container -->
+    </main>
+  </div> <!-- /.dashboard-wrapper -->
+
+  <script>
+    auth.onAuthStateChanged(user => {
+      if (!user || user.email !== "teacher@portal.com") {
+        location.href = "teacherlogin.html";
+      }
+    });
+
+    function handleLogout() {
+      if (confirm('Are you sure you want to logout?')) {
+        auth.signOut().then(() => {
+          window.location.href = 'index.html';
+        }).catch((error) => {
+          console.error('Logout error:', error);
+          alert('Error logging out. Please try again.');
+        });
+      }
+    }
+
+    function toggleStudents() {
+      const card = document.getElementById("studentsCard");
+      card.style.display = card.style.display === "none" ? "block" : "none";
+    }
+
+    function loadStudents() {
+      db.collection("students").onSnapshot(snapshot => {
+        const table = document.getElementById("studentsTable");
+        table.innerHTML = "";
+
+        snapshot.forEach(doc => {
+          const s = doc.data();
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+        <td>${s.name}</td>
+        <td>${s.year}</td>
+        <td>${s.division}</td>
+        <td>${s.batch}</td>
+        <td>${s.prn}</td>
+        <td>
+          <button class="remove-btn" onclick="removeStudent('${doc.id}', '${s.uid || ""}')">Remove</button>
+        </td>
+      `;
+          table.appendChild(row);
+        });
+      });
+    }
+
+    function removeStudent(id, uid) {
+      if (!confirm("Remove this student?")) return;
+
+      db.collection("students").doc(id).delete().then(() => {
+        if (uid) {
+          db.collection("disabledUsers").doc(uid).set({
+            disabled: true,
+            removedAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+        alert("Student removed successfully");
+      });
+    }
+    loadStudents();
+  </script>
+  <script src="branding.js"></script>
+  <script src="teacherdashboard.js"></script>
+  <footer class="footer">
+    <div class="footer-content">
+      <h3> &copy; 2026 JSPM's Rajarshi Shahu College of Engineering – Computer Department. </h3>
+    </div>
+  </footer>
+</body>
+
+</html>

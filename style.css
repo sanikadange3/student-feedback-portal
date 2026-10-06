@@ -1,0 +1,496 @@
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+    background: var(--bg-light);
+}
+
+/* Animated Background Shapes */
+.background-shapes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.shape {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(60px);
+    opacity: 0.4;
+    animation: float 20s ease-in-out infinite;
+}
+
+.shape-1 {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, #60a5fa, #a78bfa);
+    top: -100px;
+    left: -100px;
+    animation-delay: 0s;
+}
+
+.shape-2 {
+    width: 250px;
+    height: 250px;
+    background: linear-gradient(135deg, #c084fc, #60a5fa);
+    top: 50%;
+    right: -80px;
+    animation-delay: 5s;
+}
+
+.shape-3 {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #93c5fd, #ddd6fe);
+    bottom: -50px;
+    left: 20%;
+    animation-delay: 10s;
+}
+
+.shape-4 {
+    width: 280px;
+    height: 280px;
+    background: linear-gradient(135deg, #a78bfa, #93c5fd);
+    top: 20%;
+    left: 50%;
+    animation-delay: 7s;
+}
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    25% {
+        transform: translate(30px, -30px) scale(1.1);
+    }
+
+    50% {
+        transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    75% {
+        transform: translate(20px, 30px) scale(1.05);
+    }
+}
+
+/* Container with Gradient Background */
+.container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-light);
+    padding: 1rem;
+    z-index: 1;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    width: 100%;
+    max-width: 450px;
+    padding: var(--spacing-sm);
+    position: relative;
+    z-index: 2;
+}
+
+/* Entrance Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.8s ease-out 0.2s forwards;
+    opacity: 0;
+}
+
+.animate-fade-in-delayed {
+    animation: fadeIn 0.8s ease-out 0.4s forwards;
+    opacity: 0;
+}
+
+/* Logo Wrapper */
+.logo-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.logo-icon {
+    width: 64px;
+    height: 64px;
+    stroke: var(--primary);
+    filter: drop-shadow(0 4px 12px var(--shadow-light));
+    animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Title Section */
+.title-section {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.title {
+    font-size: clamp(2rem, 8vw, 3.5rem);
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* Card with Glassmorphism */
+.card {
+    background: var(--card-bg);
+    backdrop-filter: blur(10px);
+    border-radius: 1.5rem;
+    box-shadow:
+        0 20px 40px var(--shadow-light),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    padding: clamp(1.5rem, 5vw, 3rem);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.15),
+        0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+}
+
+/* Button Base Styles */
+.btn {
+    position: relative;
+    width: 100%;
+    border: none;
+    border-radius: 0.875rem;
+    padding: clamp(1rem, 3vw, 1.375rem) clamp(1.25rem, 4vw, 1.5rem);
+    font-size: clamp(1rem, 3vw, 1.25rem);
+    font-weight: 500;
+    color: white;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.btn:active {
+    transform: translateY(-1px) scale(0.98);
+}
+
+.btn:focus {
+    outline: none;
+}
+
+/* Shine Effect */
+.btn-shine {
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg,
+            transparent,
+            rgba(255, 255, 255, 0.3),
+            transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.btn:hover .btn-shine {
+    left: 100%;
+}
+
+/* Ripple Effect */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.6);
+    transform: scale(0);
+    animation: rippleAnimation 0.6s ease-out;
+    pointer-events: none;
+}
+
+@keyframes rippleAnimation {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Standardized with global.css */
+
+/* Button Icon */
+.icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-shrink: 0;
+    animation: iconBounce 2s ease-in-out infinite;
+}
+
+@keyframes iconBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+.btn:hover .icon {
+    animation: iconSpin 0.6s ease;
+}
+
+@keyframes iconSpin {
+    0% {
+        transform: rotate(0deg) scale(1);
+    }
+
+    50% {
+        transform: rotate(10deg) scale(1.1);
+    }
+
+    100% {
+        transform: rotate(0deg) scale(1);
+    }
+}
+
+.btn-text {
+    font-size: clamp(1rem, 3vw, 1.25rem);
+    font-weight: 500;
+}
+
+/* Divider */
+.divider {
+    position: relative;
+    padding: 1rem 0;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-light) 50%, transparent);
+}
+
+.divider-text {
+    position: relative;
+    background: var(--card-bg);
+    padding: 0 1rem;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    display: inline-block;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: 500;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.footer-text {
+    font-size: 0.875rem;
+    font-family: 'Times New Roman', Times, serif;
+    color: #4b5563;
+}
+
+.footer-link {
+    color: #2563eb;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.footer-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #2563eb, #7c3aed);
+    transition: width 0.3s ease;
+}
+
+.footer-link:hover::after {
+    width: 100%;
+}
+
+.footer-link:hover {
+    color: #7c3aed;
+}
+
+/* Tablet Styles */
+@media (min-width: 640px) {
+    .container {
+        padding: 1.5rem;
+    }
+
+    .title {
+        font-size: 2.25rem;
+    }
+
+    .card {
+        padding: 2.5rem;
+    }
+
+    .btn {
+        padding: 1.375rem 1.5rem;
+    }
+
+    .icon {
+        width: 1.875rem;
+        height: 1.875rem;
+    }
+
+    .btn-text {
+        font-size: 1.25rem;
+    }
+
+    .logo-icon {
+        width: 72px;
+        height: 72px;
+    }
+}
+
+/* Desktop Styles */
+@media (min-width: 768px) {
+    .container {
+        padding: 2rem;
+    }
+
+    .title-section {
+        margin-bottom: 2.5rem;
+    }
+
+    .card {
+        padding: 3rem;
+    }
+}
+
+/* Mobile Small Screens */
+@media (max-width: 480px) {
+    .logo-icon {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+/* Accessibility - High Contrast Mode Support */
+@media (prefers-contrast: high) {
+    .btn-teacher {
+        background: var(--primary);
+    }
+
+    .btn-student {
+        background: var(--secondary);
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+
+    .btn,
+    .footer-link,
+    .card,
+    .icon,
+    .shape,
+    .logo-icon {
+        animation: none !important;
+        transition: none !important;
+    }
+
+    .btn:hover {
+        transform: none;
+    }
+
+    .btn-shine {
+        display: none;
+    }
+}

@@ -1,0 +1,427 @@
+/* CSS Variables are inherited from global.css */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg-light);
+  overflow-x: hidden;
+}
+
+/* ================= LAYOUT STRUCTURE ================= */
+
+.dashboard-wrapper {
+  display: flex;
+  flex: 1;
+  width: 100%;
+}
+
+.sidebar {
+  width: 260px;
+  background: linear-gradient(180deg, var(--primary) 0%, #1e3a5f 100%);
+  padding: 2rem 1rem;
+  box-shadow: 4px 0 20px var(--shadow-light);
+  flex-shrink: 0;
+  z-index: 100;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dashboard {
+  background: var(--card-bg);
+  padding: clamp(1.5rem, 5vw, 4rem) clamp(1rem, 5vw, 5rem);
+  border-radius: clamp(1rem, 2vw, 2rem);
+  width: 100%;
+  box-shadow: 0 15px 40px var(--shadow-light);
+  animation: fadeIn 0.8s ease;
+  overflow: hidden;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= COMPONENTS ================= */
+
+h1 {
+  text-align: center;
+  margin-bottom: 3rem;
+  color: var(--text-dark);
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-weight: 700;
+}
+
+.sidebar-nav {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem 0;
+}
+
+.sidebar-btn {
+  width: 100%;
+  padding: 1rem 1.2rem;
+  margin-bottom: 0.75rem;
+  border: none;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+  text-align: left;
+}
+
+.sidebar-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+}
+
+.logout-btn {
+  margin-top: auto;
+}
+
+.structure-buttons {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+  gap: clamp(1rem, 3vw, 2rem);
+  margin-bottom: clamp(2rem, 5vw, 4rem);
+  width: 100%;
+}
+
+/* Structure Buttons inheriting from global.css .structure-btn */
+.structure-buttons .structure-btn {
+  padding: clamp(1rem, 2.5vw, 1.5rem) !important;
+  font-size: clamp(1rem, 2vw, 1.25rem) !important;
+  text-align: center;
+  justify-content: center;
+}
+
+/* All other buttons and modals handled by global.css standards */
+
+/* ================= STUDENT CARD & TABLE ================= */
+
+.students-card {
+  display: none;
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  background: white;
+  padding: clamp(1.25rem, 5vw, 2.5rem);
+  border-radius: clamp(0.75rem, 2vw, 1.5rem);
+  box-shadow: 0 10px 30px var(--shadow-light);
+  animation: slideIn 0.5s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.students-card h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+  color: var(--text-dark);
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #edf2f7;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 800px;
+}
+
+th, td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #edf2f7;
+}
+
+th {
+  background: #f8fafc;
+  color: #64748b;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+/* ================= MODALS ================= */
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.modal-content {
+  background: white;
+  margin: 2rem auto;
+  border-radius: 1.5rem;
+  width: 100%;
+  max-width: 1100px;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden; /* For header gradient */
+}
+
+.modal-content h2 {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  color: white;
+  padding: 1.5rem 2.5rem;
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.close {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.5rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: white;
+  opacity: 0.8;
+  transition: all 0.2s;
+  z-index: 10;
+}
+
+.close:hover {
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+.filter-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  padding: 2rem 2.5rem;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.export-buttons {
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Button Designers handled globally */
+
+.filter-section select {
+  padding: 0.6rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  min-width: 180px;
+  cursor: pointer;
+}
+
+/* ================= EXPORT BUTTONS ================= */
+
+.export-buttons {
+  display: flex;
+  gap: 1rem;
+}
+/* Export buttons handled by global designs */
+
+/* ================= MEDIA QUERIES ================= */
+
+@media (max-width: 1024px) {
+  .dashboard-wrapper {
+    flex-direction: column;
+    padding-top: 0;
+  }
+
+  .sidebar {
+    width: 100%;
+    padding: 0.75rem 1.25rem;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+    position: sticky;
+    top: 75px; /* Offset for college-header height */
+    z-index: 900; /* Below college-header (1000) */
+    gap: 1.25rem;
+    scrollbar-width: none;
+    background: var(--primary); /* Solid background for visibility */
+    border-right: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .sidebar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    margin: 0;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .sidebar-btn {
+    margin-bottom: 0;
+    white-space: nowrap;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .logout-btn {
+    margin: 0 0 0 auto !important; /* Push to far right */
+    position: relative;
+    z-index: 1001;
+    min-width: 120px !important;
+    padding: 0.6rem 1rem !important;
+  }
+
+  .mobile-toggle {
+    display: none;
+  }
+
+  .main-content {
+    padding: clamp(1rem, 4vw, 2rem);
+    margin-top: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    gap: 0.5rem;
+  }
+  
+  .main-content {
+    padding: 1rem;
+  }
+
+  .dashboard {
+    padding: 1.5rem 1rem;
+  }
+
+  .filter-section {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .filter-section select {
+    width: 100%;
+  }
+
+  .export-buttons {
+    flex-direction: column;
+  }
+  
+  .export-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0.5rem;
+  }
+
+  .dashboard, .students-card {
+    padding: 1rem 0.75rem;
+    border-radius: 0.5rem;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .modal-content {
+    padding: 1.5rem 1rem;
+    margin: 1rem auto;
+    width: 95%;
+  }
+  
+  .sidebar {
+    padding: 0.5rem;
+  }
+  
+  .sidebar-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* ================= TOAST NOTIFICATIONS ================= */
+
+.toast-notification {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  background: #10b981;
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  z-index: 2000;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.toast-notification.show {
+  transform: translateY(0);
+  opacity: 1;
+}

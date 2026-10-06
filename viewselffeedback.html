@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Self Registered Student Feedback</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="viewfeedback.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- jsPDF & XLSX for Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script src="firebase.js"></script>
+    <style>
+        .feedback-type-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            padding: 0 1rem;
+        }
+        .tab-btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .tab-btn:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+            color: white;
+            border-color: #7c3aed;
+            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.25);
+        }
+        .badge-self {
+            background: #e0e7ff;
+            color: #4338ca;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+    </style>
+</head>
+<body>
+    <header class="college-header">
+        <div class="header-row">
+            <div class="header-logo"><img src="image1.png" alt="JSPM Logo"></div>
+            <div class="header-center">
+                <h1>JSPM's Rajarshi Shahu College of Engineering</h1>
+                <p>
+                    Empowered Autonomous Institute • Affiliated to SPPU • Approved by AICTE<br />
+                    NBA (UG) • NAAC “A” Grade • NIRF 151–200
+                </p>
+            </div>
+            <div class="header-logo"><img src="image2.png" alt="RSCOE Logo"></div>
+        </div>
+    </header>
+
+    <header class="page-header-standard">
+        <h1 class="page-title-main">View Self Registered Student Feedback</h1>
+        <div class="top-actions-row" style="display: flex; gap: 10px; align-items: center;">
+            <button type="button" class="nav-action-btn" onclick="startNewSelfFeedbackCycle()" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(16,185,129,0.3);">
+                <span>🚀 Start New Feedback Cycle</span>
+            </button>
+            <button type="button" class="nav-action-btn" onclick="deleteSelfFeedbackCycle()" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 8px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(239,68,68,0.3);">
+                <span>🗑️ Delete Selected Cycle</span>
+            </button>
+            <a href="teacherdashboard.html" class="nav-action-btn back-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back to Dashboard</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs Removed -->
+
+    <div class="main-layout">
+        <main class="main-content">
+            <!-- Filter Card -->
+            <div class="filter-card">
+                <h2 class="filter-title">Select Filters for Self Registered Feedback</h2>
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label class="filter-label">Feedback Cycle</label>
+                        <select id="cycleFilter" class="filter-select">
+                            <option value="all">All Cycles</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Class / Year</label>
+                        <select id="yearFilter" class="filter-select">
+                            <option value="">Select Year</option>
+                            <option value="FY">FY</option>
+                            <option value="SY">SY</option>
+                            <option value="TY">TY</option>
+                            <option value="Final">Final / LY</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Division</label>
+                        <select id="divisionFilter" class="filter-select">
+                            <option value="">Select Division</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Batch</label>
+                        <select id="batchFilter" class="filter-select">
+                            <option value="">Select Batch</option>
+                            <option value="B1">B1</option>
+                            <option value="B2">B2</option>
+                            <option value="B3">B3</option>
+                            <option value="all">all batches</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Subject</label>
+                        <select id="subjectFilter" class="filter-select">
+                            <option value="">Select Subject</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="viewFeedbackBtn" class="view-feedback-btn" onclick="viewSelfFeedback()">
+                    View Feedback
+                </button>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="results-section" style="display: none;">
+                <!-- Summary Stats -->
+                <div class="summary-stats-card" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Responses</span>
+                        <span id="totalResponses" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Overall Average Rating</span>
+                        <span id="averageRanking" class="stat-value">0 / 5 ⭐</span>
+                    </div>
+                </div>
+
+                <!-- View Toggle -->
+                <div class="view-toggle">
+                    <button id="tableViewBtn" class="toggle-btn active" onclick="switchView('table')">Table View</button>
+                    <button id="cardViewBtn" class="toggle-btn" onclick="switchView('card')">Card View</button>
+                </div>
+
+                <!-- Table View -->
+                <div id="tableView" class="table-container">
+                    <div class="table-header">
+                        <h3>Self Registered Feedback Table</h3>
+                        <div class="table-actions">
+                            <button class="export-btn" onclick="exportToExcel()">Export Excel</button>
+                            <button class="export-btn" onclick="exportToPDF()">Export PDF</button>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="feedbackTable" class="feedback-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Student Name & PRN</th>
+                                    <th>Subject</th>
+                                    <th>Type</th>
+                                    <th>Faculty</th>
+                                    <th>Ratings (Q1 - Q5)</th>
+                                    <th>Comments</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tableBody">
+                                <!-- Table rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="pagination" class="pagination"></div>
+                </div>
+
+                <!-- Card View -->
+                <div id="cardView" class="card-container" style="display: none;">
+                    <div class="card-header">
+                        <h3>Feedback Cards</h3>
+                        <div class="card-actions">
+                            <button class="export-btn" onclick="exportToExcel()">Export Excel</button>
+                            <button class="export-btn" onclick="exportToPDF()">Export PDF</button>
+                        </div>
+                    </div>
+                    <div id="cardGrid" class="card-grid"></div>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Loading self-registered feedback...</p>
+            </div>
+
+            <!-- No Data Message -->
+            <div id="noDataMessage" class="no-data-message" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                    <path d="M12 17h.01" />
+                </svg>
+                <h3>No Self Registered Feedback Found</h3>
+            </div>
+
+            <!-- Bottom space -->
+            <div style="height: 3rem;"></div>
+        </main>
+
+        <script src="branding.js"></script>
+        <script src="viewselffeedback.js"></script>
+
+    <div style="display: none;">
+        <img src="image1.png" id="jspmLogo">
+        <img src="image2.png" id="rscoeLogo">
+    </div>
+</body>
+</html>

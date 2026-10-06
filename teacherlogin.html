@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Login - Feedback Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="studentlogin.css">
+    <style>
+        /* Page specific overrides */
+    </style>
+</head>
+
+<body class="loaded">
+    <header class="college-header">
+        <div class="header-row">
+            <div class="header-logo"><img src="image1.png" id="jspmLogo" alt="JSPM Logo"></div>
+            <div class="header-center">
+                <h1>JSPM's Rajarshi Shahu College of Engineering</h1>
+                <p>
+                    Empowered Autonomous Institute • Affiliated to SPPU • Approved by AICTE<br />
+                    NBA (UG) • NAAC “A” Grade • NIRF 151–200
+                </p>
+            </div>
+            <div class="header-logo"><img src="image2.png" id="rscoeLogo" alt="RSCOE Logo"></div>
+        </div>
+    </header>
+
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+
+
+    <div class="container">
+        <button class="nav-action-btn back-btn" onclick="window.location.href='index.html'">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M19 12H5" />
+                <path d="M12 19l-7-7 7-7" />
+            </svg>
+            <span>Back</span>
+        </button>
+        <div class="content-wrapper">
+            <div class="title-section">
+                <div class="logo-wrapper">
+                    <div class="logo-container">
+                        <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                        </svg>
+                    </div>
+                </div>
+                <h1 class="title">Teacher Portal</h1>
+                <p class="subtitle">Sign in to view student feedback</p>
+            </div>
+
+            <div class="card">
+                <form id="teacherLoginForm" class="form">
+
+                    <div class="form-group">
+                        <label for="teacherEmail" class="label">Email</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16v16H4z" />
+                                <path d="M22 6l-10 7L2 6" />
+                            </svg>
+                            <input type="email" id="teacherEmail" class="input" placeholder="teacher@portal.com"
+                                required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="teacherPassword" class="label">Password</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                            <input type="password" id="teacherPassword" class="input" placeholder="Enter your password"
+                                required />
+                        </div>
+                    </div>
+
+                    <div id="teacherError" class="error-message" style="display: none;"></div>
+
+                    <button type="submit" class="btn btn-submit" id="teacherSubmit">
+                        <div class="btn-shine"></div>
+                        <span class="btn-text">Sign In</span>
+                        <div class="spinner" style="display: none;"></div>
+                    </button>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+    <script src="teacherlogin.js"></script>
+    <footer class="footer">
+        <div class="footer-content">
+            <h3> &copy; 2026 JSPM's Rajarshi Shahu College of Engineering – Computer Department.
+            </h3>
+        </div>
+
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Feedback - Feedback Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="studentfeedback.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="firebase.js"></script>
+</head>
+<body>
+    <!-- Animated Background Shapes -->
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+
+    <div class="container">
+        <div class="content-wrapper">
+            <!-- Header -->
+            <div class="header">
+                <div class="header-left">
+                    <div class="logo-icon-wrapper">
+                        <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                        </svg>
+                    </div>
+                    <h1 class="page-title">Student Feedback Form</h1>
+                </div>
+            </div>
+
+            <!-- Student Info Bar -->
+            <div class="info-bar">
+                <div class="info-item">
+                    <svg class="info-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    <div>
+                        <p class="info-label">Name</p>
+                        <p class="info-value" id="studentName">Loading...</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <p class="info-label">Year</p>
+                    <p class="info-value" id="studentYear">Loading...</p>
+                </div>
+                <div class="info-item">
+                    <p class="info-label">Division</p>
+                    <p class="info-value" id="studentDivision">Loading...</p>
+                </div>
+                <div class="info-item">
+                    <p class="info-label">Batch</p>
+                    <p class="info-value" id="studentBatch">Loading...</p>
+                </div>
+            </div>
+
+           
+
+            <!-- Subject Cards -->
+            <div id="subjectCards" class="subject-cards"></div>
+
+            <!-- Submit Button -->
+            <div class="submit-section">
+                <button id="submitBtn" class="submit-btn" onclick="handleSubmit()">
+                    <div class="btn-shine"></div>
+                    <svg class="submit-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <span class="submit-text">Submit Feedback</span>
+                    <div class="submit-spinner" style="display: none;"></div>
+                </button>
+                
+                <button class="nav-action-btn logout-variant logout-btn" onclick="handleLogout()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <polyline points="16 17 21 12 16 7"/>
+                        <line x1="21" y1="12" x2="9" y2="12"/>
+                    </svg>
+                    <span class="logout-text">Logout</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="success-icon-wrapper">
+                <svg class="success-icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+            </div>
+            <h3 class="success-title">Success!</h3>
+            <p class="success-message">Your feedback has been submitted successfully.</p>
+            <button class="success-btn" onclick="closeSuccessModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- External JavaScript -->
+    <script src="studentfeedback.js"></script>
+</body>
+</html>
+

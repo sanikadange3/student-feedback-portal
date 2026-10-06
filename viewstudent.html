@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>View Students - Teacher Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="viewstudent.css">
+</head>
+
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+<body>
+  <!-- Background Shapes -->
+  <div class="background-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+  </div>
+
+  <div class="container">
+    <div class="content-wrapper">
+
+      <!-- Header -->
+      <div class="header">
+        <div class="header-left">
+          <div class="logo-icon-wrapper">
+            <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="20" x2="18" y2="10"/>
+              <line x1="12" y1="20" x2="12" y2="4"/>
+              <line x1="6" y1="20" x2="6" y2="14"/>
+            </svg>
+          </div>
+          <h1 class="page-title">Teacher Registered Students</h1>
+        </div>
+        <button class="nav-action-btn back-btn" onclick="window.location.href='teacherdashboard.html'">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5"/>
+            <path d="M12 19l-7-7 7-7"/>
+          </svg>
+          <span>Back to Dashboard</span>
+        </button>
+      </div>
+
+      <!-- Filters Card -->
+      <div class="filters-card">
+        <h3 class="filters-title">Filter Students</h3>
+        <div class="filters-grid">
+          <div class="filter-group">
+            <label class="filter-label">Year</label>
+            <select id="yearFilter" class="filter-select">
+              <option value="">All Years</option>
+              <option value="FY">First Year</option>
+              <option value="SY">Second Year</option>
+              <option value="TY">Third Year</option>
+              <option value="LY">Last Year</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Division</label>
+            <select id="divisionFilter" class="filter-select">
+              <option value="">All Divisions</option>
+              <option value="A">Division A</option>
+              <option value="B">Division B</option>
+              <option value="C">Division C</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label class="filter-label">Batch</label>
+            <select id="batchFilter" class="filter-select">
+              <option value="">All Batches</option>
+              <option value="B1">Batch 1</option>
+              <option value="B2">Batch 2</option>
+              <option value="B3">Batch 3</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <button id="applyFilters" class="apply-btn">Apply Filters</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Students Table -->
+      <div id="studentsContainer" class="students-container">
+        <div class="loading">Select filters and click Apply to view students.</div>
+      </div>
+
+    </div>
+  </div>
+
+<script src="viewstudent.js"></script>
+</body>
+</html>

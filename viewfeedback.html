@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Feedback Portal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="viewfeedback.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <!-- jsPDF for PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script src="firebase.js"></script>
+    <style>
+        /* Page specific overrides */
+        .nav-bar {
+            background: #f8fafc;
+            padding: 10px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .page-info {
+            font-weight: 600;
+            color: #1e293b;
+        }
+    </style>
+</head>
+<body>
+    <header class="college-header">
+        <div class="header-row">
+            <div class="header-logo"><img src="image1.png" alt="JSPM Logo"></div>
+            <div class="header-center">
+                <h1>JSPM's Rajarshi Shahu College of Engineering</h1>
+                <p>
+                    Empowered Autonomous Institute • Affiliated to SPPU • Approved by AICTE<br />
+                    NBA (UG) • NAAC “A” Grade • NIRF 151–200
+                </p>
+            </div>
+            <div class="header-logo"><img src="image2.png" alt="RSCOE Logo"></div>
+        </div>
+    </header>
+
+    <header class="page-header-standard">
+        <h1 class="page-title-main">View Student Feedback</h1>
+        <div class="top-actions-row">
+            <a href="teacherdashboard.html" class="nav-action-btn back-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>
+                </svg>
+                <span>Back to Dashboard</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs Removed to avoid mixing view feedback and self registered feedback -->
+
+    <div class="main-layout">
+        <main class="main-content">
+            <!-- Filter Card -->
+            <div class="filter-card">
+                <h2 class="filter-title">Select Filters</h2>
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label class="filter-label">Year</label>
+                        <select id="yearFilter" class="filter-select">
+                            <option value="">Select Year</option>
+                            <option value="FY">FY</option>
+                            <option value="SY">SY</option>
+                            <option value="TY">TY</option>
+                            <option value="Final">Final</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Division</label>
+                        <select id="divisionFilter" class="filter-select">
+                            <option value="">Select Division</option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Batch</label>
+                        <select id="batchFilter" class="filter-select">
+                            <option value="">Select Batch</option>
+                            <option value="B1">B1</option>
+                            <option value="B2">B2</option>
+                            <option value="B3">B3</option>
+                            <option value="all">all batches</option>
+
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Subject</label>
+                        <select id="subjectFilter" class="filter-select">
+                            <option value="">Select Subject</option>
+                        </select>
+                    </div>
+                </div>
+                <button id="viewFeedbackBtn" class="view-feedback-btn" onclick="viewFeedback()">
+                    View Feedback
+                </button>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="results-section" style="display: none;">
+                <!-- Summary Stats -->
+                <div class="summary-stats-card">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Responses</span>
+                        <span id="totalResponses" class="stat-value">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Average Ranking</span>
+                        <span id="averageRanking" class="stat-value">0%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Syllabus Coverage</span>
+                        <span id="avgSyllabus" class="stat-value">0%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Avg Attendance</span>
+                        <span id="avgAttendance" class="stat-value">0%</span>
+                    </div>
+                </div>
+
+                <!-- View Toggle -->
+                <div class="view-toggle">
+                    <button id="tableViewBtn" class="toggle-btn active" onclick="switchView('table')">Table
+                        View</button>
+                    <button id="cardViewBtn" class="toggle-btn" onclick="switchView('card')">Card View</button>
+                </div>
+
+                <!-- Table View -->
+                <div id="tableView" class="table-container">
+                    <div class="table-header">
+                        <h3>Feedback Table</h3>
+                        <div class="table-actions">
+                            <button class="export-btn" onclick="exportToExcel()">Export Excel</button>
+                            <button class="export-btn" onclick="exportToPDF()">Export PDF</button>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <table id="feedbackTable" class="feedback-table">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Subject</th>
+                                    <th>Type</th>
+                                    <th>Progress (Unit-wise)</th>
+                                    <th>Attendance Filled</th>
+                                    <th>Student Attendance</th>
+                                    <th>Feedback</th>
+                                    <th>Faculty</th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tableBody">
+                                <!-- Table rows will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="pagination" class="pagination">
+                        <!-- Pagination controls will be inserted here -->
+                    </div>
+                </div>
+
+                <!-- Card View -->
+                <div id="cardView" class="card-container" style="display: none;">
+                    <div class="card-header">
+                        <h3>Feedback Cards</h3>
+                        <div class="card-actions">
+                            <button class="export-btn" onclick="exportToExcel()">Export Excel</button>
+                            <button class="export-btn" onclick="exportToPDF()">Export PDF</button>
+                        </div>
+                    </div>
+                    <div id="cardGrid" class="card-grid">
+                        <!-- Feedback cards will be inserted here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Loading feedback...</p>
+            </div>
+
+            <!-- No Data Message -->
+            <div id="noDataMessage" class="no-data-message" style="display: none;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                    <path d="M12 17h.01" />
+                </svg>
+                <h3>No Feedback Found</h3>
+            </div>
+
+            <!-- Bottom space only -->
+            <div style="height: 3rem;"></div>
+        </main>
+
+        <script src="branding.js"></script>
+        <script src="viewfeedback.js"></script>
+
+
+
+    <div style="display: none;">
+        <img src="image1.png" id="jspmLogo">
+        <img src="image2.png" id="rscoeLogo">
+    </div>
+</body>
+
+</html>

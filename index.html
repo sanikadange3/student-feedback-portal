@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Student Feedback Portal - Login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Page specific overrides if any */
+    </style>
+</head>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="firebase.js"></script>
+
+
+<body>
+    <header class="college-header">
+        <div class="header-row">
+            <div class="header-logo"><img src="image1.png" id="jspmLogo" alt="JSPM Logo"></div>
+            <div class="header-center">
+                <h1>JSPM's Rajarshi Shahu College of Engineering</h1>
+                <p>
+                    Empowered Autonomous Institute • Affiliated to SPPU • Approved by AICTE<br />
+                    NBA (UG) • NAAC “A” Grade • NIRF 151–200
+                </p>
+            </div>
+            <div class="header-logo"><img src="image2.png" id="rscoeLogo" alt="RSCOE Logo"></div>
+        </div>
+    </header>
+
+    <!-- Animated Background Elements -->
+    <div class="background-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+    </div>
+    <div class="container">
+        <div class="content-wrapper">
+            <!-- Title Section -->
+            <div class="title-section animate-fade-in">
+                <div class="logo-wrapper">
+                    <svg class="logo-icon" xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                    </svg>
+                </div>
+                <h1 class="title">
+                    Teacher Student<br>
+                    Feedback Portal
+                </h1>
+                <p class="subtitle">Please select your role to continue</p>
+            </div>
+
+            <!-- Card with Login Buttons -->
+            <div class="card animate-slide-up">
+                <!-- Teacher Login Button -->
+                <button class="btn btn-teacher" onclick='window.location.href="teacherlogin.html"'>
+                    <div class="btn-content">
+                        <!-- Graduation Cap Icon -->
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                            <path d="M6 12v5c3 3 9 3 12 0v-5" />
+                        </svg>
+                        <span class="btn-text">Teacher Login</span>
+                    </div>
+                    <div class="btn-shine"></div>
+                </button>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span class="divider-text">or</span>
+                </div>
+
+                <!-- Student Login Button -->
+                <button class="btn btn-student" onclick='window.location.href="studentlogin.html"'>
+                    <div class="btn-content">
+                        <!-- User Icon -->
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+                            <circle cx="12" cy="7" r="4" />
+                        </svg>
+                        <span class="btn-text">Student Login</span>
+                    </div>
+                    <div class="btn-shine"></div>
+                </button>
+
+                <!-- Divider -->
+                <div class="divider">
+                    <span class="divider-text">new user?</span>
+                </div>
+
+                <!-- Student Registration Button -->
+                <button class="btn btn-reg" onclick='window.location.href="studentregistration.html"' style="background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);">
+                    <div class="btn-content">
+                        <!-- User Plus Icon -->
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                            <circle cx="8.5" cy="7" r="4" />
+                            <line x1="20" y1="8" x2="20" y2="14" />
+                            <line x1="17" y1="11" x2="23" y2="11" />
+                        </svg>
+                        <span class="btn-text">Student Registration</span>
+                    </div>
+                    <div class="btn-shine"></div>
+                </button>
+            </div>
+
+
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <h3> &copy; 2026 JSPM's Rajarshi Shahu College of Engineering – Computer Department.
+            </h3>
+        </div>
+
+    </footer>
+
+</body>
+
+</html>
