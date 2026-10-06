@@ -1,0 +1,333 @@
+/* Color Theme CSS Variables */
+:root {
+  --primary: #0a1f44;
+  --secondary: #8b0000;
+  --bg-light: #f4f6fa;
+  --text-dark: #333;
+  --text-muted: #666;
+  --card-bg: #ffffff;
+  --border-light: #e5e7eb;
+  --shadow-light: rgba(0, 0, 0, 0.1);
+  --white: #ffffff;
+  --spacing-sm: 1rem;
+  --spacing-md: 2rem;
+  --spacing-lg: 3rem;
+}
+
+/* Global Styles */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+img, video, iframe, canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+  margin: 0;
+  min-height: 100vh;
+}
+
+.page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.main-content-area {
+  flex: 1;
+  width: 100%;
+  padding: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .main-content-area {
+    padding: var(--spacing-sm);
+  }
+}
+
+/* Global Card Styles */
+.card {
+  background: var(--card-bg);
+  border-radius: 1rem;
+  box-shadow: 0 10px 25px var(--shadow-light);
+}
+
+/* Global Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary) 0%, #1e3a5f 100%);
+  color: var(--white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(10, 31, 68, 0.3);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--secondary) 0%, #a52a2a 100%);
+  color: var(--white);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(139, 0, 0, 0.3);
+}
+
+/* Branded College Header */
+.college-header {
+  background: var(--card-bg);
+  border-bottom: 4px solid var(--primary);
+  padding: clamp(0.5rem, 2vw, 0.75rem) clamp(0.75rem, 5vw, 2rem);
+  box-shadow: 0 2px 12px var(--shadow-light);
+  width: 100%;
+}
+
+.header-row {
+  display: grid;
+  grid-template-columns: minmax(60px, 120px) 1fr minmax(60px, 120px);
+  align-items: center;
+  gap: clamp(0.5rem, 2vw, 1.5rem);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-logo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header-logo img {
+  max-height: clamp(40px, 8vw, 80px);
+  width: auto;
+  object-fit: contain;
+}
+
+.header-center {
+  text-align: center;
+  color: var(--primary);
+}
+
+.header-center h1 {
+  font-family: 'Times New Roman', serif;
+  font-size: clamp(1rem, 3.5vw, 1.75rem);
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  line-height: 1.2;
+}
+
+.header-center p {
+  font-size: clamp(0.5rem, 1.8vw, 0.85rem);
+  opacity: 0.85;
+  line-height: 1.4;
+}
+
+@media (max-width: 480px) {
+  .header-row {
+    grid-template-columns: 45px 1fr 45px;
+    gap: 0.5rem;
+  }
+  .header-logo img {
+    max-height: 35px;
+  }
+}
+/* Universal Standardized Action Buttons */
+.nav-action-btn, .action-btn, .submit-btn, .export-btn, .view-feedback-btn, 
+.delete-btn, .remove-btn, .struct-btn, .structure-btn, .cancel-btn, 
+.pagination-btn, .btn, .btn-submit, .btn-student, .btn-teacher {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.8rem clamp(1.25rem, 3vw, 2.5rem);
+  min-width: clamp(140px, 16vw, 180px);
+  min-height: 50px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%) !important;
+  color: var(--white) !important;
+  border: none !important;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: clamp(0.9rem, 2.5vw, 1rem);
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 6px 20px rgba(10, 31, 68, 0.2);
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.nav-action-btn:hover, .action-btn:hover, .submit-btn:hover, .export-btn:hover, 
+.view-feedback-btn:hover, .delete-btn:hover, .remove-btn:hover, .struct-btn:hover, 
+.structure-btn:hover, .cancel-btn:hover, .pagination-btn:hover, .btn:hover {
+  transform: translateY(-4px) scale(1.03);
+  box-shadow: 0 12px 30px rgba(139, 0, 0, 0.3);
+  background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%) !important;
+}
+
+/* Icon Responsiveness */
+.nav-action-btn svg, .btn svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  stroke: var(--white);
+  transition: transform 0.3s ease;
+}
+
+/* Mobile Responsiveness for ALL Buttons */
+@media (max-width: 640px) {
+  .nav-action-btn, .action-btn, .submit-btn, .export-btn, .btn, .view-feedback-btn {
+    width: 100% !important;
+    min-width: 0;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Universal Form Elements */
+.attendance-select, .attendance-input, .input, .select, .comment-textarea {
+  width: 100%;
+  padding: 0.8rem 1.25rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  transition: all 0.3s ease;
+  background: var(--white);
+  outline: none;
+}
+
+.attendance-select:focus, .attendance-input:focus, .input:focus, .comment-textarea:focus {
+  border-color: var(--secondary);
+  box-shadow: 0 0 0 4px rgba(139, 0, 0, 0.1);
+}
+
+.attendance-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(250px, 45%, 400px), 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Fluid Animation for page load */
+@keyframes fadeInSlide {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.subject-card, .info-bar, .filter-card, .stat-card {
+  animation: fadeInSlide 0.6s ease-out forwards;
+}
+
+/* Specific SVG animations for direction-based buttons */
+.back-btn:hover svg { transform: translateX(-4px); }
+.logout-btn:hover svg, .submit-btn:hover svg, .export-btn:hover svg { transform: translateX(4px); }
+
+/* Updated Global Footer Styles */
+.footer {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 50%, #1e3a5f 100%);
+  color: var(--white);
+  text-align: center;
+  padding: 2rem 1rem 1.5rem;
+  margin-top: auto;
+  width: 100%;
+  box-shadow: 0 -4px 20px var(--shadow-light);
+  font-family: 'Inter', sans-serif;
+}
+
+.footer-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.footer h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.footer p {
+  opacity: 0.9;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.footer-logos {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.footer-logo {
+  height: 40px;
+  opacity: 0.9;
+  transition: opacity 0.3s;
+}
+
+.footer-logo:hover {
+  opacity: 1;
+}
+
+.footer-divider {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  width: 80%;
+  max-width: 300px;
+  margin: 1rem auto;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 1.5rem 1rem 1rem;
+  }
+
+  .footer h3 {
+    font-size: 1.1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .footer p {
+    font-size: 0.9rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .footer-logos {
+
+    gap: 0.8rem;
+  }
+
+  .footer-logo {
+    height: 35px;
+  }
+}
